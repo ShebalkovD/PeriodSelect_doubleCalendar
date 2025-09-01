@@ -6,6 +6,7 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import prettier from 'eslint-plugin-prettier';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -108,6 +109,14 @@ export default tseslint.config(
           reactPlugin.configs.flat['jsx-runtime'],
           prettierRecommended,
           prettierConfig,
+          {
+            plugins: {
+                prettier,
+            },
+            rules: {
+                'prettier/prettier': 'error',
+            },
+          },
       ],
       files: ['**/*.{ts,tsx}'],
       languageOptions: {
