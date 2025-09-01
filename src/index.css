@@ -1,9 +1,10 @@
 body {
   margin: 0;
+  padding: 4rem;
   display: flex;
   min-width: 320px;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   min-height: 100vh;
 }
 

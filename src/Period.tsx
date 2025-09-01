@@ -196,11 +196,10 @@ export const Period = ({
   }, [periods])
 
   return (
-    <Paper sx={{ p: 2, fontFamily: 'arial', minHeight: 520, borderRadius: 4}}>
-
-      <Stack flexDirection={'column'} justifyContent={'space-between'}  sx={{ height: '100%'}}>
+    <Paper sx={{ p: 2, fontFamily: 'arial', borderRadius: 4, position: 'relative'}}>
+      <Stack flexDirection={'column'} justifyContent={'space-between'}  sx={{ minHeight: 520 }}>
         <Box>
-          <Stack  sx={{ mb: 2, backgroundColor: '#fff', borderRadius: 2, border: `1px solid ${theme.palette.divider}`}}>
+          <Stack sx={{ mb: 2, backgroundColor: '#fff', borderRadius: 2, border: `1px solid ${theme.palette.divider}` }}>
             <CustomHeader minYear={minYear} maxYear={maxYear} value={currentYear} value2={currentYear2} setValue={setCurrentYear} setValue2={setCurrentYear2} />
             <Stack flexDirection={'row'} justifyContent={'space-between'} alignContent={'center'} gap={2}>
               <DateCalendar
