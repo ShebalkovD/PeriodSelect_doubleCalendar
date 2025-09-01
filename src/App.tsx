@@ -1,4 +1,5 @@
 import { Box, Fade, FormControl, InputLabel, ListSubheader, MenuItem, Popper, Select, Stack } from "@mui/material"
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { useRef } from "react";
 import { useState } from "react";
 import { Period } from "./Period";
@@ -11,6 +12,10 @@ function App() {
   const handleClick = () => {
     setIsCalendarOpen((prev) => !prev);
   };
+
+  const handleClickAway = () => {
+    setIsCalendarOpen(false);
+  }
 
   return (
     <Stack justifyContent={'start'} alignItems={'center'} sx={{ width: '100%', height: '100%', m: 0}}>
@@ -27,11 +32,14 @@ function App() {
 
       <Popper id={'periodDoubleCalendar'} open={isCalendarOpen} anchorEl={myRef.current} transition sx={{ zIndex: 100 }}>
         {({ TransitionProps }) => (
-          <Fade {...TransitionProps} timeout={350}>
-            <Box>
-              <Period minYear={2020} maxYear={2025}/>
-            </Box>
-          </Fade>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Fade {...TransitionProps} timeout={250}>
+              <Box>
+                <Period minYear={2020} maxYear={2025}/>
+              </Box>
+            </Fade>
+          </ClickAwayListener>
+          
         )}
       </Popper>
     </Stack>
