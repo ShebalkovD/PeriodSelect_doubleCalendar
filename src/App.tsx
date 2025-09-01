@@ -13,6 +13,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { Calendar } from 'Calendar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
+import { FastPeriod } from 'fastPeriod';
 
 export type Period = {
   year: number;
@@ -110,6 +111,7 @@ export const App = (): JSX.Element => {
           </ClickAwayListener>
         )}
       </Popper>
+      <FastPeriod periodLabel="Зима" />
     </Stack>
   );
 };

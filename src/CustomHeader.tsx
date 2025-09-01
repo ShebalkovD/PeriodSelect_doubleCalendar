@@ -1,18 +1,18 @@
-import type { JSX } from "@emotion/react/jsx-runtime"
-import { Stack, IconButton, useTheme, Icon } from "@mui/material"
+import type { JSX } from '@emotion/react/jsx-runtime';
+import { Stack, IconButton, useTheme, Icon } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
 type Props = {
-  minYear: number,
-  maxYear: number,
-  value: number,
-  value2: number,
+  minYear: number;
+  maxYear: number;
+  value: number;
+  value2: number;
   setValue: (updater: (prev: number) => number) => void;
   setValue2: (updater: (prev: number) => number) => void;
-}
+};
 
 export const CustomHeader = ({
   minYear,
@@ -25,22 +25,37 @@ export const CustomHeader = ({
   const theme = useTheme();
 
   const handlePrev = useCallback(() => {
-    setValue((prev: number) => prev !== minYear ? prev - 1 : prev);
-    setValue2((prev: number) => prev !== minYear ? prev - 1 : prev);
-  }, [setValue, setValue2, minYear])
+    setValue((prev: number) => (prev !== minYear ? prev - 1 : prev));
+    setValue2((prev: number) => (prev !== minYear ? prev - 1 : prev));
+  }, [setValue, setValue2, minYear]);
 
   const handleNext = useCallback(() => {
-    setValue(prev => prev !== maxYear ? prev + 1 : prev);
-    setValue2(prev => prev !== maxYear ? prev + 1 : prev);
-  }, [setValue, setValue2, maxYear])
+    setValue((prev) => (prev !== maxYear ? prev + 1 : prev));
+    setValue2((prev) => (prev !== maxYear ? prev + 1 : prev));
+  }, [setValue, setValue2, maxYear]);
 
   return (
-    <Stack justifyContent={'space-between'} flexDirection={'row'} alignItems={'center'} sx={{ p: 1, fontWeight: 700, userSelect: 'none', borderBottom: `1px solid ${theme.palette.divider}`}}>
+    <Stack
+      justifyContent={'space-between'}
+      flexDirection={'row'}
+      alignItems={'center'}
+      sx={{
+        p: 1,
+        fontWeight: 700,
+        userSelect: 'none',
+        borderBottom: `1px solid ${theme.palette.divider}`,
+      }}
+    >
       <IconButton onClick={handlePrev} disabled={value === minYear}>
         <NavigateBeforeIcon />
       </IconButton>
 
-      <Stack flexDirection={'row'} alignItems={'center'} justifyContent={'center'} gap={1}>  
+      <Stack
+        flexDirection={'row'}
+        alignItems={'center'}
+        justifyContent={'center'}
+        gap={1}
+      >
         <span>{value}</span>
         <Icon>
           <HorizontalRuleIcon />
@@ -52,5 +67,5 @@ export const CustomHeader = ({
         <NavigateNextIcon />
       </IconButton>
     </Stack>
-  )
-}
+  );
+};
