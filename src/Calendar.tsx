@@ -2,7 +2,15 @@ import type { JSX } from '@emotion/react/jsx-runtime';
 
 import { Box, Button, Divider, Paper, Stack, useTheme } from '@mui/material';
 import { DateCalendar } from '@mui/x-date-pickers';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
+import type { Periods, Period } from 'App';
 import { CustomHeader } from './CustomHeader';
 import { PeriodGroup } from './PeriodGroup';
 
@@ -24,17 +32,16 @@ const dates: Record<string, number> = {
 type Props = {
   minYear: number;
   maxYear: number;
+  handleCalendarClose: () => void;
+  setValue: Dispatch<SetStateAction<Periods | null>>;
 };
 
-interface Period {
-  year: number;
-  month: number;
-  label: string;
-}
-
-export type Periods = Period[] | [];
-
-export const Period = ({ minYear, maxYear }: Props): JSX.Element => {
+export const Calendar = ({
+  minYear,
+  maxYear,
+  handleCalendarClose,
+  setValue,
+}: Props): JSX.Element => {
   const theme = useTheme();
 
   const calendarRef = useRef<HTMLDivElement>(null);
@@ -243,12 +250,9 @@ export const Period = ({ minYear, maxYear }: Props): JSX.Element => {
   ]);
 
   const handleComplete = useCallback(() => {
-    const result = periods.map(
-      (period) => new Date(period.year, period.month - 1, 1),
-    );
-
-    console.log(result);
-  }, [periods]);
+    setValue(periods);
+    handleCalendarClose();
+  }, [periods, setValue, handleCalendarClose]);
 
   return (
     <Paper
@@ -287,7 +291,6 @@ export const Period = ({ minYear, maxYear }: Props): JSX.Element => {
                 openTo="month"
                 views={['month']}
                 sx={{ height: 'fit-content', userSelect: 'none', p: 1 }}
-                onMonthChange={(value) => console.log(value)}
                 slots={{
                   calendarHeader: () => <Box></Box>,
                 }}
@@ -305,7 +308,6 @@ export const Period = ({ minYear, maxYear }: Props): JSX.Element => {
                 openTo="month"
                 views={['month']}
                 sx={{ height: 'fit-content', userSelect: 'none', p: 1 }}
-                onMonthChange={(value) => console.log(value)}
                 slots={{
                   calendarHeader: () => <Box></Box>,
                 }}

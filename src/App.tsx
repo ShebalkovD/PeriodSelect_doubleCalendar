@@ -10,21 +10,45 @@ import {
   Stack,
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import { useRef, useState } from 'react';
-import { Period } from './Period';
+import { Calendar } from 'Calendar';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { JSX } from '@emotion/react/jsx-runtime';
 
-export const App = () => {
+export type Period = {
+  year: number;
+  month: number;
+  label: string;
+};
+
+export type Periods = Period[] | [];
+
+export const App = (): JSX.Element => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [periods, setPeriods] = useState<Periods | null>([]);
+  const [value, setValue] = useState<string>('');
 
   const myRef = useRef(null);
 
-  const handleClick = () => {
+  const handleCalendarOpen = useCallback(() => {
     setIsCalendarOpen((prev) => !prev);
-  };
+  }, []);
 
-  const handleClickAway = () => {
+  const handleCalendarClose = useCallback(() => {
     setIsCalendarOpen(false);
-  };
+  }, []);
+
+  const handlePresetPeriod = useCallback((newValue: string) => {
+    setValue(newValue);
+  }, []);
+
+  useEffect(() => {
+    if (periods) {
+      const result = periods.map(
+        (period) => new Date(period.year, period.month - 1, 1),
+      );
+      console.log(result);
+    }
+  }, [periods]);
 
   return (
     <Stack
@@ -44,12 +68,17 @@ export const App = () => {
           defaultValue=""
           id="grouped-select"
           label="Выберите периоды для сравнения"
+          value={value}
         >
           <ListSubheader>Сезоны</ListSubheader>
-          <MenuItem value={1}>Зима</MenuItem>
-          <MenuItem value={2}>Лето</MenuItem>
+          <MenuItem value={'Зима'} onClick={() => handlePresetPeriod('Зима')}>
+            Зима
+          </MenuItem>
+          <MenuItem value={'Лето'} onClick={() => handlePresetPeriod('Лето')}>
+            Лето
+          </MenuItem>
           <ListSubheader>Свой период</ListSubheader>
-          <MenuItem value={3} onClick={handleClick}>
+          <MenuItem value={'Свой период'} onClick={handleCalendarOpen}>
             Добавить
           </MenuItem>
         </Select>
@@ -63,14 +92,19 @@ export const App = () => {
         sx={{ zIndex: 100 }}
       >
         {({ TransitionProps }) => (
-          <ClickAwayListener onClickAway={handleClickAway}>
+          <ClickAwayListener onClickAway={handleCalendarClose}>
             <Grow
               {...TransitionProps}
               timeout={250}
               style={{ transformOrigin: 'center top' }}
             >
               <Box>
-                <Period minYear={2020} maxYear={2025} />
+                <Calendar
+                  minYear={2020}
+                  maxYear={2025}
+                  handleCalendarClose={handleCalendarClose}
+                  setValue={setPeriods}
+                />
               </Box>
             </Grow>
           </ClickAwayListener>

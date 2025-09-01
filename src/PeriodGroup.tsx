@@ -1,6 +1,6 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { Stack, Box } from '@mui/material';
-import type { Periods } from './Period';
+import type { Periods } from './App';
 
 type Props = {
   year: number;
