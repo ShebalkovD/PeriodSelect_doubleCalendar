@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  display: flex;
+  min-width: 320px;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.calendar_list_item {
+  animation: fadeInCalendarItem 0.2s ease-in-out;
+}
+
+@keyframes fadeInCalendarItem {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
