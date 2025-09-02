@@ -14,12 +14,46 @@ import { Calendar } from 'Calendar';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { FastPeriod } from 'FastPeriod';
+import { MyBarChart } from './MyBarChart';
 
 export type Period = {
   year: number;
   month: number;
   label?: string;
 };
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}
+
+const data = [];
+
+const years = [2025, 2024, 2023, 2022, 2021, 2020];
+const monthNames = [
+  'Январь',
+  'Февраль',
+  'Март',
+  'Апрель',
+  'Май',
+  'Июнь',
+  'Июль',
+  'Август',
+  'Сентябрь',
+  'Октябрь',
+  'Ноябрь',
+  'Декабрь',
+];
+
+years.forEach((year) => {
+  for (let i = 0; i < 12; i++) {
+    const date = new Date(year, i, 1);
+    const label = `${monthNames[i]} ${year}`;
+    const value = Math.round(getRandomArbitrary(100, 999));
+    data.push({ date: date, label: label, value: value });
+  }
+});
+
+console.log(data);
 
 const WIDTH: number = 400;
 
@@ -28,8 +62,9 @@ export type Periods = Period[] | [];
 export const App = (): JSX.Element => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
-  const [periods, setPeriods] = useState<Periods | null>([]);
+  const [periods, setPeriods] = useState<Periods | null>(null);
   const [fastPeriodID, setFastPeriodID] = useState<string>('');
+  const [barData, setBarData] = useState(data);
   // const [value, setValue] = useState<string>('');
 
   const handleFastPeriodClick = (
@@ -68,6 +103,10 @@ export const App = (): JSX.Element => {
         (period) => new Date(period.year, period.month - 1, 1),
       );
       console.log(result);
+      const resultCompare = result.map((item) => item.getTime());
+      setBarData(
+        data.filter((item) => resultCompare.includes(item.date.getTime())),
+      );
     }
   }, [periods]);
 
@@ -75,7 +114,8 @@ export const App = (): JSX.Element => {
     <Stack
       justifyContent={'start'}
       alignItems={'center'}
-      sx={{ width: '100%', height: '100%', m: 0 }}
+      sx={{ width: '100%', height: '100%', m: 0, pt: 2 }}
+      gap={4}
     >
       <FormControl
         sx={{ m: 1, minWidth: WIDTH, position: 'relative' }}
@@ -158,6 +198,10 @@ export const App = (): JSX.Element => {
           </ClickAwayListener>
         )}
       </Popper>
+
+      <Box sx={{ height: 400, width: '100%', overflow: 'hidden' }}>
+        <MyBarChart data={barData} />
+      </Box>
     </Stack>
   );
 };

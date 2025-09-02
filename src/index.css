@@ -1,11 +1,13 @@
 body {
   margin: 0;
-  padding: 4rem;
-  display: flex;
-  min-width: 320px;
-  justify-content: center;
-  align-items: start;
+  width: 100%;
   min-height: 100vh;
+  position: relative;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
 }
 
 .calendar_list_item {
