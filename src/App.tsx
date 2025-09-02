@@ -29,12 +29,18 @@ export const App = (): JSX.Element => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
   const [periods, setPeriods] = useState<Periods | null>([]);
+  const [fastPeriodID, setFastPeriodID] = useState<string>('');
   // const [value, setValue] = useState<string>('');
 
   const handleFastPeriodClick = (
     event: React.MouseEvent<HTMLElement>,
   ): void => {
     event.preventDefault();
+    setFastPeriodID(
+      event.currentTarget.dataset.value
+        ? event.currentTarget.dataset.value
+        : '',
+    );
     setIsFastPeriodYearOpen((prev) => !prev);
   };
 
@@ -141,7 +147,7 @@ export const App = (): JSX.Element => {
             <Grow {...TransitionProps} timeout={250}>
               <Box>
                 <FastPeriod
-                  periodID="Лето"
+                  periodID={fastPeriodID}
                   minYear={2020}
                   closePopper={() => setIsFastPeriodYearOpen(false)}
                   parentWidth={WIDTH}
