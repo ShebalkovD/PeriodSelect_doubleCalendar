@@ -18,7 +18,7 @@ import { FastPeriod } from 'FastPeriod';
 export type Period = {
   year: number;
   month: number;
-  label: string;
+  label?: string;
 };
 
 const WIDTH: number = 400;
@@ -141,10 +141,11 @@ export const App = (): JSX.Element => {
             <Grow {...TransitionProps} timeout={250}>
               <Box>
                 <FastPeriod
-                  periodID="Зима"
+                  periodID="Лето"
                   minYear={2020}
                   closePopper={() => setIsFastPeriodYearOpen(false)}
                   parentWidth={WIDTH}
+                  setValue={setPeriods}
                 />
               </Box>
             </Grow>

@@ -13,14 +13,27 @@ import {
   type MenuProps,
   type SelectChangeEvent,
 } from '@mui/material';
-import { useCallback, useEffect, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
+import type { Period, Periods } from 'App';
 
 type Props = {
   parentWidth: number;
   periodID: string;
   minYear: number;
   closePopper: () => void;
+  setValue: Dispatch<SetStateAction<Periods | null>>;
 };
+
+interface PeriodConfigItem {
+  id: string;
+  months: number[];
+}
 
 const MenuPropsValue: Partial<MenuProps> = {
   anchorOrigin: {
@@ -28,15 +41,18 @@ const MenuPropsValue: Partial<MenuProps> = {
     horizontal: 'center',
   },
 };
+
 const currentYear = getYear(new Date());
+
+const periodConfig: PeriodConfigItem[] = [{ id: 'Лето', months: [6, 7, 8] }];
 
 export const FastPeriod = ({
   parentWidth,
   periodID,
   minYear,
   closePopper,
+  setValue,
 }: Props): JSX.Element => {
-  console.log(periodID);
   const [years, setYears] = useState<Array<number>>([]);
   const [selected, setSelected] = useState<Array<number>>([]);
 
@@ -73,6 +89,7 @@ export const FastPeriod = ({
       } = event;
       setSelected(typeof value !== 'string' ? value : []);
     },
+
     [],
   );
 
@@ -80,6 +97,19 @@ export const FastPeriod = ({
     setIsOpen(false);
     closePopper();
   }, [closePopper]);
+
+  // Передать периоды в род. компонент
+  useEffect(() => {
+    const period = periodConfig.filter((item) => item.id === periodID);
+    const result: Period[] = [];
+    selected.forEach((year) => {
+      period[0].months.forEach((month) => {
+        result.push({ year: year, month: month });
+      });
+    });
+
+    setValue(result);
+  }, [periodID, selected, setValue]);
 
   return (
     <Paper

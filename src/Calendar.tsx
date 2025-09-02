@@ -214,7 +214,9 @@ export const Calendar = ({
       (period) => period.year === currentYear,
     );
     const currentMonthsNames: string[] = [];
-    currentMonths.forEach((month) => currentMonthsNames.push(month.label));
+    currentMonths.forEach((month) =>
+      currentMonthsNames.push(month.label ? month.label : ''),
+    );
 
     if (monthButtons) {
       monthButtons.forEach((button) => {
@@ -228,7 +230,9 @@ export const Calendar = ({
       (period) => period.year === currentYear2,
     );
     const currentMonthsNames2: string[] = [];
-    currentMonths2.forEach((month) => currentMonthsNames2.push(month.label));
+    currentMonths2.forEach((month) =>
+      currentMonthsNames2.push(month.label ? month.label : ''),
+    );
 
     if (monthButtons2) {
       monthButtons2.forEach((button) => {
