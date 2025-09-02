@@ -1,5 +1,6 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { useTheme } from '@mui/material';
+import { memo } from 'react';
 import {
   LineChart,
   Line,
@@ -11,7 +12,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export const MyBarChart = ({ data }): JSX.Element => {
+export const MyBarChart = memo(({ data }): JSX.Element => {
   const theme = useTheme();
 
   return (
@@ -40,4 +41,4 @@ export const MyBarChart = ({ data }): JSX.Element => {
       </LineChart>
     </ResponsiveContainer>
   );
-};
+});

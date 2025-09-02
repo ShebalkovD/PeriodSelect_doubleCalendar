@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { Calendar } from 'Calendar';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { FastPeriod } from 'FastPeriod';
 import { MyBarChart } from './MyBarChart';
@@ -64,8 +64,19 @@ export const App = (): JSX.Element => {
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
   const [periods, setPeriods] = useState<Periods | null>(null);
   const [fastPeriodID, setFastPeriodID] = useState<string>('');
-  const [barData, setBarData] = useState(data);
   // const [value, setValue] = useState<string>('');
+
+  const barData = useMemo(() => {
+    if (periods) {
+      const resultCompare = periods.map((period) =>
+        new Date(period.year, period.month - 1, 1).getTime(),
+      );
+
+      return data.filter((item) => resultCompare.includes(item.date.getTime()));
+    }
+
+    return data;
+  }, [periods]); // Зависимость только от periods
 
   const handleFastPeriodClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -103,10 +114,7 @@ export const App = (): JSX.Element => {
         (period) => new Date(period.year, period.month - 1, 1),
       );
       console.log(result);
-      const resultCompare = result.map((item) => item.getTime());
-      setBarData(
-        data.filter((item) => resultCompare.includes(item.date.getTime())),
-      );
+      // const resultCompare = result.map((item) => item.getTime());
     }
   }, [periods]);
 
