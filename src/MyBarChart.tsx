@@ -29,7 +29,14 @@ export const MyBarChart = memo(({ data }): JSX.Element => {
         }}
       >
         <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="label" />
+        <XAxis
+          dataKey="label"
+          angle={-45}
+          textAnchor="end"
+          height={100}
+          fontFamily="arial"
+          fontSize={12}
+        />
         <YAxis />
         <Tooltip />
         <Legend />
