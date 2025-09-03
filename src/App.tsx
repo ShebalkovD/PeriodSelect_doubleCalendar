@@ -10,6 +10,7 @@ import {
   Stack,
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
+import AddIcon from '@mui/icons-material/Add';
 import { Calendar } from 'Calendar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { JSX } from '@emotion/react/jsx-runtime';
@@ -160,8 +161,17 @@ export const App = (): JSX.Element => {
             Лето
           </MenuItem>
           <ListSubheader>Свой период</ListSubheader>
-          <MenuItem value={'Свой период'} onClick={handleCalendarOpen}>
+          <MenuItem
+            value={'Свой период'}
+            onClick={handleCalendarOpen}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             Добавить
+            <AddIcon fontSize="medium" />
           </MenuItem>
           {periodHistory && <ListSubheader>История</ListSubheader>}
           {periodHistory &&
