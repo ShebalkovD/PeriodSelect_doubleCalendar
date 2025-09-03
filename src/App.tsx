@@ -64,6 +64,13 @@ export const App = (): JSX.Element => {
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
   const [periods, setPeriods] = useState<Periods | null>(null);
   const [fastPeriodID, setFastPeriodID] = useState<string>('');
+  const periodHistory = useMemo(() => {
+    const history = localStorage.getItem('PMC.sales.periodHistory');
+
+    return history ? JSON.parse(history) : null;
+  }, [periods]);
+
+  console.log(periodHistory);
   // const [value, setValue] = useState<string>('');
 
   const barData = useMemo(() => {
@@ -76,7 +83,7 @@ export const App = (): JSX.Element => {
     }
 
     return data;
-  }, [periods]); // Зависимость только от periods
+  }, [periods]);
 
   const handleFastPeriodClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -151,6 +158,16 @@ export const App = (): JSX.Element => {
           <MenuItem value={'Свой период'} onClick={handleCalendarOpen}>
             Добавить
           </MenuItem>
+          {periodHistory && <ListSubheader>История</ListSubheader>}
+          {periodHistory &&
+            periodHistory.map((item) => (
+              <MenuItem
+                value={'Свой период'}
+                key={`${item.label}-${item.year}`}
+              >
+                {item.label}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
 

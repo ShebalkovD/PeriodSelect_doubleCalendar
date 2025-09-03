@@ -15,6 +15,21 @@ import type { Periods, Period } from 'App';
 import { CustomHeader } from './CustomHeader';
 import { PeriodGroup } from './PeriodGroup';
 
+const shortMonths: Record<string, string> = {
+  январь: 'янв.',
+  февраль: 'фев.',
+  март: 'мар.',
+  апрель: 'апр.',
+  май: 'май',
+  июнь: 'июн.',
+  июль: 'июл.',
+  август: 'авг.',
+  сентябрь: 'сент.',
+  октябрь: 'окт.',
+  ноябрь: 'нояб.',
+  декабрь: 'дек.',
+};
+
 const dates: Record<string, number> = {
   январь: 1,
   февраль: 2,
@@ -254,8 +269,24 @@ export const Calendar = memo(
 
     const handleComplete = useCallback(() => {
       setValue(periods);
+      const labelParts: string[] = [];
+      years.map((year) => {
+        const labelPart = `${year}: ${periods
+          .filter((period) => period.year === year)
+          .map((period) => shortMonths[period.label ? period.label : 'undf.'])
+          .join(' ')}`;
+
+        labelParts.push(labelPart);
+      });
+
+      const label = labelParts.join(' - ');
+
+      localStorage.setItem(
+        'PMC.sales.periodHistory',
+        JSON.stringify([{ label: label, periods: periods }]),
+      );
       handleCalendarClose();
-    }, [periods, setValue, handleCalendarClose]);
+    }, [periods, setValue, handleCalendarClose, years]);
 
     return (
       <Paper
