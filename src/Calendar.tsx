@@ -50,10 +50,17 @@ type Props = {
   maxYear: number;
   handleCalendarClose: () => void;
   setValue: Dispatch<SetStateAction<Periods | null>>;
+  setInputValue: Dispatch<SetStateAction<string>>;
 };
 
 export const Calendar = memo(
-  ({ minYear, maxYear, handleCalendarClose, setValue }: Props): JSX.Element => {
+  ({
+    minYear,
+    maxYear,
+    handleCalendarClose,
+    setValue,
+    setInputValue,
+  }: Props): JSX.Element => {
     const theme = useTheme();
 
     const calendarRef = useRef<HTMLDivElement>(null);
@@ -285,6 +292,7 @@ export const Calendar = memo(
         'PMC.sales.periodHistory',
         JSON.stringify([{ label: label, periods: periods }]),
       );
+      setInputValue(label);
       handleCalendarClose();
     }, [periods, setValue, handleCalendarClose, years]);
 

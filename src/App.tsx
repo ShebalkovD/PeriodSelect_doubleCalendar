@@ -64,6 +64,7 @@ export const App = (): JSX.Element => {
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
   const [periods, setPeriods] = useState<Periods | null>(null);
   const [fastPeriodID, setFastPeriodID] = useState<string>('');
+  const [inputValue, setInputValue] = useState<string>('');
   const periodHistory = useMemo(() => {
     const history = localStorage.getItem('PMC.sales.periodHistory');
 
@@ -71,7 +72,6 @@ export const App = (): JSX.Element => {
   }, [periods]);
 
   console.log(periodHistory);
-  // const [value, setValue] = useState<string>('');
 
   const barData = useMemo(() => {
     if (periods) {
@@ -95,6 +95,11 @@ export const App = (): JSX.Element => {
         : '',
     );
     setIsFastPeriodYearOpen((prev) => !prev);
+    setInputValue(
+      event.currentTarget.dataset.value
+        ? event.currentTarget.dataset.value
+        : '',
+    );
   };
 
   const myRef = useRef(null);
@@ -145,7 +150,7 @@ export const App = (): JSX.Element => {
           defaultValue=""
           id="grouped-select"
           label="Выберите периоды для сравнения"
-          // value={value}
+          value={inputValue}
         >
           <ListSubheader>Сезоны</ListSubheader>
           <MenuItem value={'Зима'} onClick={handleFastPeriodClick}>
@@ -162,8 +167,12 @@ export const App = (): JSX.Element => {
           {periodHistory &&
             periodHistory.map((item) => (
               <MenuItem
-                value={'Свой период'}
+                value={item.label}
                 key={`${item.label}-${item.year}`}
+                onClick={() => {
+                  setPeriods(item.periods);
+                  setInputValue(item.label);
+                }}
               >
                 {item.label}
               </MenuItem>
@@ -192,6 +201,7 @@ export const App = (): JSX.Element => {
                   maxYear={2025}
                   handleCalendarClose={handleCalendarClose}
                   setValue={setPeriods}
+                  setInputValue={setInputValue}
                 />
               </Box>
             </Grow>
