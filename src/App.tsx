@@ -83,11 +83,15 @@ export const App = (): JSX.Element => {
         new Date(period.year, period.month - 1, 1).getTime(),
       );
 
-      return data.filter((item) => resultCompare.includes(item.date.getTime()));
+      return data
+        .filter((item) => resultCompare.includes(item.date.getTime()))
+        .sort((a, b) => a.date - b.date);
     }
 
-    return data;
+    return data.sort((a, b) => a.date - b.date);
   }, [periods]);
+
+  console.log('BarDATA:', barData);
 
   const handleFastPeriodClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -186,7 +190,7 @@ export const App = (): JSX.Element => {
                   value={item.label}
                   key={`${item.label}`}
                   onClick={() => {
-                    setPeriods(item.periods);
+                    setPeriods(item.periods.sort());
                     setInputValue(item.label);
                   }}
                   sx={{ width: WIDTH, overflow: 'hidden', pr: 1 }}

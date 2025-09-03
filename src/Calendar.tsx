@@ -125,7 +125,7 @@ export const Calendar = memo(
     const sortPeriods = useCallback(() => {
       setPeriods((prev) => {
         return prev.sort((a, b) => {
-          return b.year - a.year;
+          return a.year - b.year;
         });
       });
     }, []);
