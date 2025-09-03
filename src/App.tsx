@@ -199,7 +199,7 @@ export const App = (): JSX.Element => {
                     <Box
                       sx={{
                         display: 'inline-block',
-                        bgcolor: theme.palette.divider,
+                        border: `1px solid ${theme.palette.divider}`,
                         pl: 1,
                         pr: 1,
                         borderRadius: 4,
