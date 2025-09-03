@@ -105,15 +105,17 @@ export const FastPeriod = memo(
 
     // Передать периоды в род. компонент
     useEffect(() => {
-      const period = periodConfig.filter((item) => item.id === periodID);
-      const result: Period[] = [];
-      selected.forEach((year) => {
-        period[0].months.forEach((month) => {
-          result.push({ year: year, month: month });
+      if (selected.length > 0) {
+        const period = periodConfig.filter((item) => item.id === periodID);
+        const result: Period[] = [];
+        selected.forEach((year) => {
+          period[0].months.forEach((month) => {
+            result.push({ year: year, month: month });
+          });
         });
-      });
 
-      setValue(result);
+        setValue(result);
+      }
     }, [periodID, selected, setValue]);
 
     return (
