@@ -8,6 +8,7 @@ import {
   Popper,
   Select,
   Stack,
+  useTheme,
 } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import AddIcon from '@mui/icons-material/Add';
@@ -56,7 +57,7 @@ years.forEach((year) => {
 
 console.log(data);
 
-const WIDTH: number = 400;
+const WIDTH: number = 480;
 
 export type Periods = Period[] | [];
 
@@ -73,6 +74,8 @@ export const App = (): JSX.Element => {
   }, [periods]);
 
   console.log(periodHistory);
+
+  const theme = useTheme();
 
   const barData = useMemo(() => {
     if (periods) {
@@ -139,7 +142,7 @@ export const App = (): JSX.Element => {
       gap={4}
     >
       <FormControl
-        sx={{ m: 1, minWidth: WIDTH, position: 'relative' }}
+        sx={{ m: 1, width: WIDTH, position: 'relative' }}
         ref={myRef}
         size="small"
       >
@@ -153,7 +156,7 @@ export const App = (): JSX.Element => {
           label="Выберите периоды для сравнения"
           value={inputValue}
         >
-          <ListSubheader>Сезоны</ListSubheader>
+          <ListSubheader>Быстрый период</ListSubheader>
           <MenuItem value={'Зима'} onClick={handleFastPeriodClick}>
             Зима
           </MenuItem>
@@ -175,18 +178,38 @@ export const App = (): JSX.Element => {
           </MenuItem>
           {periodHistory && <ListSubheader>История</ListSubheader>}
           {periodHistory &&
-            periodHistory.map((item) => (
-              <MenuItem
-                value={item.label}
-                key={`${item.label}-${item.year}`}
-                onClick={() => {
-                  setPeriods(item.periods);
-                  setInputValue(item.label);
-                }}
-              >
-                {item.label}
-              </MenuItem>
-            ))}
+            periodHistory.map((item) => {
+              const labelParts = item.label.split(';');
+
+              return (
+                <MenuItem
+                  value={item.label}
+                  key={`${item.label}`}
+                  onClick={() => {
+                    setPeriods(item.periods);
+                    setInputValue(item.label);
+                  }}
+                  sx={{ width: WIDTH, overflow: 'hidden', pr: 1 }}
+                >
+                  {labelParts.map((part) => (
+                    <Box
+                      sx={{
+                        display: 'inline-block',
+                        bgcolor: theme.palette.divider,
+                        pl: 1,
+                        pr: 1,
+                        borderRadius: 4,
+                        mr: 0.5,
+                        fontSize: 16,
+                      }}
+                      key={part}
+                    >
+                      {part}
+                    </Box>
+                  ))}
+                </MenuItem>
+              );
+            })}
         </Select>
       </FormControl>
 

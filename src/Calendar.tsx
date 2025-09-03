@@ -294,7 +294,7 @@ export const Calendar = memo(
         labelParts.push(labelPart);
       });
 
-      const label = labelParts.join(' - ');
+      const label = labelParts.join(';');
       const history = localStorage.getItem('PMC.sales.periodHistory');
 
       if (!history) {
