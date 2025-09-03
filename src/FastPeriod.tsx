@@ -53,6 +53,7 @@ const currentYear = getYear(new Date());
 const periodConfig: PeriodConfigItem[] = [
   { id: 'Лето', months: [6, 7, 8] },
   { id: 'Зима', months: [1, 2, 12] },
+  { id: 'Полный год', months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
 ];
 
 export const FastPeriod = memo(

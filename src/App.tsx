@@ -171,6 +171,9 @@ export const App = (): JSX.Element => {
           <MenuItem value={'Лето'} onClick={handleFastPeriodClick}>
             Лето
           </MenuItem>
+          <MenuItem value={'Полный год'} onClick={handleFastPeriodClick}>
+            Полный год
+          </MenuItem>
           <ListSubheader>Свой период</ListSubheader>
           <MenuItem
             value={'Свой период'}
