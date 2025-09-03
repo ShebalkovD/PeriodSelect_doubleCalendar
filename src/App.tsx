@@ -128,10 +128,10 @@ export const App = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    if (!isFastPeriodYearOpen) {
+    if (!isFastPeriodYearOpen && fastPeriodValue.length > 0) {
       setLastFastPeriodID(fastPeriodID);
     }
-  }, [isFastPeriodYearOpen, fastPeriodID]);
+  }, [isFastPeriodYearOpen, fastPeriodID, fastPeriodValue]);
 
   useEffect(() => {
     if (periods) {
@@ -243,6 +243,8 @@ export const App = (): JSX.Element => {
                   handleCalendarClose={handleCalendarClose}
                   setValue={setPeriods}
                   setInputValue={setInputValue}
+                  setFastPeriodID={setFastPeriodID}
+                  setLastFastPeriodID={setLastFastPeriodID}
                 />
               </Box>
             </Grow>
@@ -271,6 +273,8 @@ export const App = (): JSX.Element => {
                   setValue={setPeriods}
                   fastPeriodValue={fastPeriodValue}
                   setFastPeriodValue={setFastPediodValue}
+                  setFastPeriodID={setFastPeriodID}
+                  setInputValue={setInputValue}
                 />
               </Box>
             </Grow>

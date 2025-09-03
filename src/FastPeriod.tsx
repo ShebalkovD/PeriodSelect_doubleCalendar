@@ -32,6 +32,8 @@ type Props = {
   setValue: Dispatch<SetStateAction<Periods | null>>;
   fastPeriodValue: Array<number>;
   setFastPeriodValue: Dispatch<SetStateAction<Array<number>>>;
+  setFastPeriodID: Dispatch<SetStateAction<string>>;
+  setInputValue: Dispatch<SetStateAction<string>>;
 };
 
 interface PeriodConfigItem {
@@ -63,6 +65,8 @@ export const FastPeriod = memo(
     setValue,
     fastPeriodValue,
     setFastPeriodValue,
+    setFastPeriodID,
+    setInputValue,
   }: Props): JSX.Element => {
     const [years, setYears] = useState<Array<number>>([]);
     const [selected, setSelected] = useState<Array<number>>(
@@ -108,9 +112,20 @@ export const FastPeriod = memo(
     );
 
     const handleClose = useCallback(() => {
+      if (selected.length <= 0) {
+        setFastPeriodID(lastPeriodID);
+        setInputValue(lastPeriodID);
+      }
+
       setIsOpen(false);
       closePopper();
-    }, [closePopper]);
+    }, [
+      closePopper,
+      lastPeriodID,
+      setFastPeriodID,
+      setInputValue,
+      selected.length,
+    ]);
 
     // Передать периоды в род. компонент
     useEffect(() => {

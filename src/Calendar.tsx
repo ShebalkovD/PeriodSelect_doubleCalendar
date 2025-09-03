@@ -59,6 +59,8 @@ type Props = {
   handleCalendarClose: () => void;
   setValue: Dispatch<SetStateAction<Periods | null>>;
   setInputValue: Dispatch<SetStateAction<string>>;
+  setFastPeriodID: Dispatch<SetStateAction<string>>;
+  setLastFastPeriodID: Dispatch<SetStateAction<string>>;
 };
 
 export const Calendar = memo(
@@ -68,6 +70,8 @@ export const Calendar = memo(
     handleCalendarClose,
     setValue,
     setInputValue,
+    setFastPeriodID,
+    setLastFastPeriodID,
   }: Props): JSX.Element => {
     const theme = useTheme();
 
@@ -316,8 +320,18 @@ export const Calendar = memo(
       }
 
       setInputValue(label);
+      setFastPeriodID('');
+      setLastFastPeriodID('');
       handleCalendarClose();
-    }, [periods, setValue, handleCalendarClose, years, setInputValue]);
+    }, [
+      periods,
+      setValue,
+      handleCalendarClose,
+      years,
+      setInputValue,
+      setFastPeriodID,
+      setLastFastPeriodID,
+    ]);
 
     return (
       <Paper
