@@ -1,6 +1,14 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 
-import { Box, Button, Divider, Paper, Stack, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { DateCalendar } from '@mui/x-date-pickers';
 import {
   memo,
@@ -391,6 +399,11 @@ export const Calendar = memo(
                 minHeight: 100,
               }}
             >
+              {years.length <= 0 && (
+                <Typography sx={{ opacity: 0.5 }}>
+                  Добавьте месяцы к сравнению
+                </Typography>
+              )}
               {years.length > 0 &&
                 years.map((year) => (
                   <PeriodGroup key={year} year={year} periods={periods} />
