@@ -287,14 +287,29 @@ export const Calendar = memo(
       });
 
       const label = labelParts.join(' - ');
+      const history = localStorage.getItem('PMC.sales.periodHistory');
 
-      localStorage.setItem(
-        'PMC.sales.periodHistory',
-        JSON.stringify([{ label: label, periods: periods }]),
-      );
+      if (!history) {
+        localStorage.setItem(
+          'PMC.sales.periodHistory',
+          JSON.stringify([{ label: label, periods: periods }]),
+        );
+      } else {
+        const historyValue = JSON.parse(history);
+
+        if (historyValue.length >= 5) {
+          historyValue.splice(0, 1);
+        }
+
+        localStorage.setItem(
+          'PMC.sales.periodHistory',
+          JSON.stringify([...historyValue, { label: label, periods: periods }]),
+        );
+      }
+
       setInputValue(label);
       handleCalendarClose();
-    }, [periods, setValue, handleCalendarClose, years]);
+    }, [periods, setValue, handleCalendarClose, years, setInputValue]);
 
     return (
       <Paper
