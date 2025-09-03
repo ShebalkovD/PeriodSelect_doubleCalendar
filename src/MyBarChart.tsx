@@ -1,4 +1,5 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
+import type { BarData } from 'App';
 import { useTheme } from '@mui/material';
 import { memo } from 'react';
 import {
@@ -12,7 +13,11 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export const MyBarChart = memo(({ data }): JSX.Element => {
+type Props = {
+  data: BarData;
+};
+
+export const MyBarChart = memo(({ data }: Props): JSX.Element => {
   const theme = useTheme();
 
   return (

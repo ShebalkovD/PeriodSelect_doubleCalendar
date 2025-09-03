@@ -24,11 +24,17 @@ export type Period = {
   label?: string;
 };
 
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}
+export type BarData = {
+  date: Date;
+  label: string;
+  value: number;
+}[];
 
-const data = [];
+const getRandomArbitrary = (min: number, max: number): number => {
+  return Math.random() * (max - min) + min;
+};
+
+const data: BarData = [];
 
 const years = [2025, 2024, 2023, 2022, 2021, 2020];
 const monthNames = [
@@ -55,11 +61,14 @@ years.forEach((year) => {
   }
 });
 
-console.log(data);
-
 const WIDTH: number = 480;
 
 export type Periods = Period[] | [];
+
+type PeriodHistory = {
+  label: string;
+  periods: Periods;
+}[];
 
 export const App = (): JSX.Element => {
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
@@ -70,13 +79,12 @@ export const App = (): JSX.Element => {
   const [inputValue, setInputValue] = useState<string>('');
   const [fastPeriodValue, setFastPediodValue] = useState<Array<number>>([]);
 
-  const periodHistory = useMemo(() => {
+  const periodHistory: PeriodHistory = useMemo(() => {
     const history = localStorage.getItem('PMC.sales.periodHistory');
 
     return history ? JSON.parse(history) : null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [periods]);
-
-  console.log(periodHistory);
 
   const theme = useTheme();
 
@@ -88,13 +96,11 @@ export const App = (): JSX.Element => {
 
       return data
         .filter((item) => resultCompare.includes(item.date.getTime()))
-        .sort((a, b) => a.date - b.date);
+        .sort((a, b) => a.date.getTime() - b.date.getTime());
     }
 
-    return data.sort((a, b) => a.date - b.date);
+    return data.sort((a, b) => a.date.getTime() - b.date.getTime());
   }, [periods]);
-
-  console.log('BarDATA:', barData);
 
   const handleFastPeriodClick = (
     event: React.MouseEvent<HTMLElement>,
@@ -132,15 +138,6 @@ export const App = (): JSX.Element => {
       setLastFastPeriodID(fastPeriodID);
     }
   }, [isFastPeriodYearOpen, fastPeriodID, fastPeriodValue]);
-
-  useEffect(() => {
-    if (periods) {
-      const result = periods.map(
-        (period) => new Date(period.year, period.month - 1, 1),
-      );
-      console.log(result);
-    }
-  }, [periods]);
 
   return (
     <Stack
