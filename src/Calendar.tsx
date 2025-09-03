@@ -305,7 +305,7 @@ export const Calendar = memo(
       } else {
         const historyValue = JSON.parse(history);
 
-        if (historyValue.length >= 5) {
+        if (historyValue.length >= 3) {
           historyValue.splice(0, 1);
         }
 
@@ -424,6 +424,7 @@ export const Calendar = memo(
               variant="contained"
               sx={{ width: 140 }}
               onClick={handleComplete}
+              disabled={periods.length <= 0}
             >
               Подтвердить
             </Button>
