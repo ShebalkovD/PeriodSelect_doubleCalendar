@@ -66,7 +66,10 @@ export const App = (): JSX.Element => {
   const [isFastPeriodYearOpen, setIsFastPeriodYearOpen] = useState(false);
   const [periods, setPeriods] = useState<Periods | null>(null);
   const [fastPeriodID, setFastPeriodID] = useState<string>('');
+  const [lastFastPeriodID, setLastFastPeriodID] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
+  const [fastPeriodValue, setFastPediodValue] = useState<Array<number>>([]);
+
   const periodHistory = useMemo(() => {
     const history = localStorage.getItem('PMC.sales.periodHistory');
 
@@ -124,9 +127,11 @@ export const App = (): JSX.Element => {
     setIsFastPeriodYearOpen(false);
   }, []);
 
-  // const handlePresetPeriod = useCallback((newValue: string) => {
-  //   setValue(newValue);
-  // }, []);
+  useEffect(() => {
+    if (!isFastPeriodYearOpen) {
+      setLastFastPeriodID(fastPeriodID);
+    }
+  }, [isFastPeriodYearOpen, fastPeriodID]);
 
   useEffect(() => {
     if (periods) {
@@ -134,7 +139,6 @@ export const App = (): JSX.Element => {
         (period) => new Date(period.year, period.month - 1, 1),
       );
       console.log(result);
-      // const resultCompare = result.map((item) => item.getTime());
     }
   }, [periods]);
 
@@ -260,10 +264,13 @@ export const App = (): JSX.Element => {
               <Box>
                 <FastPeriod
                   periodID={fastPeriodID}
+                  lastPeriodID={lastFastPeriodID}
                   minYear={2020}
                   closePopper={() => setIsFastPeriodYearOpen(false)}
                   parentWidth={WIDTH}
                   setValue={setPeriods}
+                  fastPeriodValue={fastPeriodValue}
+                  setFastPeriodValue={setFastPediodValue}
                 />
               </Box>
             </Grow>

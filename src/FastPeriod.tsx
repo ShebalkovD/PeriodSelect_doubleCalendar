@@ -26,9 +26,12 @@ import type { Period, Periods } from 'App';
 type Props = {
   parentWidth: number;
   periodID: string;
+  lastPeriodID: string;
   minYear: number;
   closePopper: () => void;
   setValue: Dispatch<SetStateAction<Periods | null>>;
+  fastPeriodValue: Array<number>;
+  setFastPeriodValue: Dispatch<SetStateAction<Array<number>>>;
 };
 
 interface PeriodConfigItem {
@@ -54,12 +57,17 @@ export const FastPeriod = memo(
   ({
     parentWidth,
     periodID,
+    lastPeriodID,
     minYear,
     closePopper,
     setValue,
+    fastPeriodValue,
+    setFastPeriodValue,
   }: Props): JSX.Element => {
     const [years, setYears] = useState<Array<number>>([]);
-    const [selected, setSelected] = useState<Array<number>>([]);
+    const [selected, setSelected] = useState<Array<number>>(
+      periodID === lastPeriodID ? fastPeriodValue : [],
+    );
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -93,9 +101,10 @@ export const FastPeriod = memo(
           target: { value },
         } = event;
         setSelected(typeof value !== 'string' ? value : []);
+        setFastPeriodValue(typeof value !== 'string' ? value : []);
       },
 
-      [],
+      [setFastPeriodValue],
     );
 
     const handleClose = useCallback(() => {
