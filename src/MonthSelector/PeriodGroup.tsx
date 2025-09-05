@@ -1,6 +1,6 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
 import { Stack, Box } from '@mui/material';
-import type { Periods } from './App';
+import type { Periods } from './MonthSelector';
 
 type Props = {
   year: number;
@@ -17,6 +17,7 @@ export const PeriodGroup = ({ year, periods }: Props): JSX.Element => {
       sx={{ p: 1 }}
       className="calendar_list_item"
     >
+      {/* Для работы анимации групп, добавить анимацию для css класса calendar_list_item */}
       <Box
         sx={{
           fontWeight: 400,

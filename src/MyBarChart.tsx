@@ -1,5 +1,5 @@
 import type { JSX } from '@emotion/react/jsx-runtime';
-import type { BarData } from 'App';
+import type { BarData } from 'MonthSelector/MonthSelector';
 import { useTheme } from '@mui/material';
 import { memo } from 'react';
 import {

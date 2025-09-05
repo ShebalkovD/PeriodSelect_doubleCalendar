@@ -1,5 +1,11 @@
-import type { JSX } from '@emotion/react/jsx-runtime';
-import { getYear } from 'date-fns';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from 'react';
 
 import {
   Checkbox,
@@ -13,24 +19,19 @@ import {
   type MenuProps,
   type SelectChangeEvent,
 } from '@mui/material';
-import {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-  type Dispatch,
-  type SetStateAction,
-} from 'react';
-import type { Period, Periods } from 'App';
+
+import type { JSX } from '@emotion/react/jsx-runtime';
+import type { Period, Periods } from 'MonthSelector/MonthSelector';
+import { getYear } from 'date-fns';
 
 type Props = {
   parentWidth: number;
   periodID: string;
   lastPeriodID: string;
+  fastPeriodValue: Array<number>;
   minYear: number;
   closePopper: () => void;
   setValue: Dispatch<SetStateAction<Periods | null>>;
-  fastPeriodValue: Array<number>;
   setFastPeriodValue: Dispatch<SetStateAction<Array<number>>>;
   setFastPeriodID: Dispatch<SetStateAction<string>>;
   setInputValue: Dispatch<SetStateAction<string>>;
@@ -76,14 +77,6 @@ export const FastPeriod = memo(
 
     const [isOpen, setIsOpen] = useState(false);
 
-    useEffect(() => {
-      const timer = setTimeout(() => {
-        setIsOpen(true);
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }, []);
-
     const generateYears = useCallback(() => {
       const result: Array<number> = [];
       let i = currentYear;
@@ -95,10 +88,6 @@ export const FastPeriod = memo(
 
       setYears(result);
     }, [minYear]);
-
-    useEffect(() => {
-      generateYears();
-    }, [generateYears]);
 
     const handleChange = useCallback(
       (event: SelectChangeEvent<typeof selected>) => {
@@ -142,6 +131,18 @@ export const FastPeriod = memo(
         setValue(result);
       }
     }, [periodID, selected, setValue]);
+
+    useEffect(() => {
+      generateYears();
+    }, [generateYears]);
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setIsOpen(true);
+      }, 100);
+
+      return () => clearTimeout(timer);
+    }, []);
 
     return (
       <Paper

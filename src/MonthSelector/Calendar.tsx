@@ -1,15 +1,3 @@
-import type { JSX } from '@emotion/react/jsx-runtime';
-
-import {
-  Box,
-  Button,
-  Divider,
-  Paper,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import { DateCalendar } from '@mui/x-date-pickers';
 import {
   memo,
   useCallback,
@@ -19,39 +7,22 @@ import {
   type Dispatch,
   type SetStateAction,
 } from 'react';
-import type { Periods, Period } from 'App';
+import {
+  Box,
+  Button,
+  Divider,
+  Paper,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import type { JSX } from '@emotion/react/jsx-runtime';
+import { DateCalendar } from '@mui/x-date-pickers';
+import type { Periods, Period } from 'MonthSelector/MonthSelector';
 import { CustomHeader } from './CustomHeader';
 import { PeriodGroup } from './PeriodGroup';
-
-const shortMonths: Record<string, string> = {
-  январь: 'янв.',
-  февраль: 'фев.',
-  март: 'мар.',
-  апрель: 'апр.',
-  май: 'май',
-  июнь: 'июн.',
-  июль: 'июл.',
-  август: 'авг.',
-  сентябрь: 'сент.',
-  октябрь: 'окт.',
-  ноябрь: 'нояб.',
-  декабрь: 'дек.',
-};
-
-const dates: Record<string, number> = {
-  январь: 1,
-  февраль: 2,
-  март: 3,
-  апрель: 4,
-  май: 5,
-  июнь: 6,
-  июль: 7,
-  август: 8,
-  сентябрь: 9,
-  октябрь: 10,
-  ноябрь: 11,
-  декабрь: 12,
-};
+import { MONTH_SHORTNAMES } from './constants/monthShortnames';
+import { MONTH_NUMBERS } from './constants/monthNumbers';
 
 type Props = {
   minYear: number;
@@ -145,7 +116,7 @@ export const Calendar = memo(
         );
 
         const monthName = event.currentTarget.ariaLabel || '';
-        const monthNumber = dates[monthName];
+        const monthNumber = MONTH_NUMBERS[monthName];
 
         const newPeriod: Period = {
           year: currentYear,
@@ -153,26 +124,27 @@ export const Calendar = memo(
           label: monthName,
         };
 
+        if (!periods) {
+          setPeriods([newPeriod]);
+        }
+
         if (periods) {
           setPeriods((prev) => {
-            if (
-              prev.some(
-                (period) =>
-                  period.year === newPeriod.year &&
-                  period.month === newPeriod.month,
-              )
-            ) {
-              return prev.filter(
-                (period) =>
-                  period.year !== newPeriod.year ||
-                  period.month !== newPeriod.month,
-              );
-            } else {
-              return [...prev, newPeriod];
-            }
+            const isPeriodExists = prev.some(
+              (period) =>
+                period.year === newPeriod.year &&
+                period.month === newPeriod.month,
+            );
+
+            // Если период уже есть - убрать его
+            return isPeriodExists
+              ? prev.filter(
+                  (period) =>
+                    period.year !== newPeriod.year ||
+                    period.month !== newPeriod.month,
+                )
+              : [...prev, newPeriod];
           });
-        } else {
-          setPeriods([newPeriod]);
         }
 
         sortPeriods();
@@ -191,7 +163,7 @@ export const Calendar = memo(
         );
 
         const monthName = event.currentTarget.ariaLabel || '';
-        const monthNumber = dates[monthName];
+        const monthNumber = MONTH_NUMBERS[monthName];
 
         const newPeriod: Period = {
           year: currentYear2,
@@ -199,26 +171,27 @@ export const Calendar = memo(
           label: monthName,
         };
 
+        if (!periods) {
+          setPeriods([newPeriod]);
+        }
+
         if (periods) {
           setPeriods((prev) => {
-            if (
-              prev.some(
-                (period) =>
-                  period.year === newPeriod.year &&
-                  period.month === newPeriod.month,
-              )
-            ) {
-              return prev.filter(
-                (period) =>
-                  period.year !== newPeriod.year ||
-                  period.month !== newPeriod.month,
-              );
-            } else {
-              return [...prev, newPeriod];
-            }
+            const isPeriodExists = prev.some(
+              (period) =>
+                period.year === newPeriod.year &&
+                period.month === newPeriod.month,
+            );
+
+            // Если период уже есть - убрать его
+            return isPeriodExists
+              ? prev.filter(
+                  (period) =>
+                    period.year !== newPeriod.year ||
+                    period.month !== newPeriod.month,
+                )
+              : [...prev, newPeriod];
           });
-        } else {
-          setPeriods([newPeriod]);
         }
 
         sortPeriods();
@@ -240,10 +213,13 @@ export const Calendar = memo(
     // Выделение кнопок при переключении года
     useEffect(() => {
       resetButtons();
+
       const currentMonths = periods.filter(
         (period) => period.year === currentYear,
       );
+
       const currentMonthsNames: string[] = [];
+
       currentMonths.forEach((month) =>
         currentMonthsNames.push(month.label ? month.label : ''),
       );
@@ -262,7 +238,9 @@ export const Calendar = memo(
       const currentMonths2 = periods.filter(
         (period) => period.year === currentYear2,
       );
+
       const currentMonthsNames2: string[] = [];
+
       currentMonths2.forEach((month) =>
         currentMonthsNames2.push(month.label ? month.label : ''),
       );
@@ -292,7 +270,9 @@ export const Calendar = memo(
       years.map((year) => {
         const labelPart = `${year}: ${periods
           .filter((period) => period.year === year)
-          .map((period) => shortMonths[period.label ? period.label : 'undf.'])
+          .map(
+            (period) => MONTH_SHORTNAMES[period.label ? period.label : 'undf.'],
+          )
           .join(' ')}`;
 
         labelParts.push(labelPart);
@@ -364,6 +344,7 @@ export const Calendar = memo(
                 setValue={setCurrentYear}
                 setValue2={setCurrentYear2}
               />
+
               <Stack
                 flexDirection={'row'}
                 justifyContent={'space-between'}
@@ -404,7 +385,6 @@ export const Calendar = memo(
               </Stack>
             </Stack>
 
-            {/* Для анимации элемента списка добавить в css файле анимацию к классу calendar_list_item */}
             <Box
               sx={{
                 mb: 2,

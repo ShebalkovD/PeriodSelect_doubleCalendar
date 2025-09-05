@@ -25,14 +25,14 @@ export const CustomHeader = ({
   const theme = useTheme();
 
   const handlePrev = useCallback(() => {
-    setValue((prev: number) => (prev !== minYear ? prev - 1 : prev));
-    setValue2((prev: number) => (prev !== minYear ? prev - 1 : prev));
-  }, [setValue, setValue2, minYear]);
+    setValue((prev: number) => prev - 1);
+    setValue2((prev: number) => prev - 1);
+  }, [setValue, setValue2]);
 
   const handleNext = useCallback(() => {
-    setValue((prev) => (prev !== maxYear ? prev + 1 : prev));
-    setValue2((prev) => (prev !== maxYear ? prev + 1 : prev));
-  }, [setValue, setValue2, maxYear]);
+    setValue((prev) => prev + 1);
+    setValue2((prev) => prev + 1);
+  }, [setValue, setValue2]);
 
   return (
     <Stack
